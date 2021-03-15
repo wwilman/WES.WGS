@@ -17,5 +17,6 @@ for chr in {1..22} X; do
     --buffer_size 10000 \
     --fork 10 \
     --offline \
+    --no_stats \
     --cache -o $DIRANNOT/finalAnnot.chr"${chr}".txt ;
 done
