@@ -33,8 +33,8 @@ for x in {1..22} X; do
     uniq | \
     awk -f "$DIRSOURCE"/transpose.awk | \
     tr -s '[:blank:]' ","|
-    awk 'BEGIN{FS=",";OFS=", "} { $1=$1; print $0 }' ; done | \
-    paste "${pathTmp}"canon.chr${x}.gene.txt - > "${pathTmp}"regenie.set.list.chr${x}.txt
+    awk 'BEGIN{FS=",";OFS=","} { $1=$1; print $0 }' ; done | \
+    paste -d'\0'  "${pathTmp}"canon.chr${x}.gene.txt -  > "${pathTmp}"regenie.set.list.chr${x}.txt
 
   rm "${pathTmp}"canon.chr${x}.*
 

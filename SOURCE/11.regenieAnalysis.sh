@@ -62,22 +62,56 @@ regenie \
   
   
 #with the pooled exclusion list (named exclusionList.txt below), to be given to the participating cohorts
-#regenie \
-#  --step 2 \
-#  --exclude-sets $DIROUT/common.zero.one.perc.ExomeEur.txt \
-#  --minMAC 1 \
-#  --covarFile $pathCov \
-#  --phenoFile $pathPheno \
-#  --bed $pathPlink \
-#  --aaf-bins 0.01,0.001 \
-#  --build-mask 'max' \
-#  --mask-def "${pathReg}"regenie.mask.def.txt \
-#  --set-list "${pathReg}"regenie.set.list.txt \
-#  --anno-file "${pathReg}"regenie.anno.file.txt \
-#  --aaf-file "${pathReg}"regenie.aaf.file.txt \
-#  --bt \
-#  --htp \
-#  --firth --approx \
-#  --pred "${pathOut}"step1AllPhenoLD_pred.list \
-#  --bsize 200 \
-#  --out "${pathOut}"burden.res.common
+
+#for MAF>1%
+plink \
+  --bfile $pathPlink \
+  --exclude /scratch/richards/guillaume.butler-laporte/WGS/regenieInputs/to.give.final/MAF.1.percent/for.use.with.grch38/grch38.maf.1.id.regenie.txt \
+  --make-bed \
+  --out ${pathPlink}.maf1perc
+
+regenie \
+  --step 2 \
+   --minMAC 1 \
+  --covarFile $pathCov \
+  --phenoFile $pathPheno \
+  --bed ${pathPlink}.maf1perc \
+  --aaf-bins 0.01 \
+  --build-mask 'max' \
+  --mask-def "${pathReg}"regenie.mask.def.txt \
+  --set-list "${pathReg}"regenie.set.list.txt \
+  --anno-file "${pathReg}"regenie.anno.file.txt \
+  --aaf-file "${pathReg}"regenie.aaf.file.txt \
+  --bt \
+  --htp \
+  --firth --approx \
+  --pred "${pathOut}"step1AllPhenoLD_pred.list \
+  --bsize 200 \
+  --out "${pathOut}"burden.res.common.1.perc
+
+#For MAF>0.1%
+plink \
+  --bfile $pathPlink \
+  --exclude /scratch/richards/guillaume.butler-laporte/WGS/regenieInputs/to.give.final/MAF.0.1.percent/for.use.with.grch38/grch38.maf.0.1.id.regenie.txt \
+  --make-bed \
+  --out ${pathPlink}.maf0.1perc
+
+regenie \
+  --step 2 \
+  --minMAC 1 \
+  --covarFile $pathCov \
+  --phenoFile $pathPheno \
+  --bed ${pathPlink}.maf0.1perc \
+  --aaf-bins 0.001 \
+  --build-mask 'max' \
+  --mask-def "${pathReg}"regenie.mask.def.txt \
+  --set-list "${pathReg}"regenie.set.list.txt \
+  --anno-file "${pathReg}"regenie.anno.file.txt \
+  --aaf-file "${pathReg}"regenie.aaf.file.txt \
+  --bt \
+  --htp \
+  --firth --approx \
+  --pred "${pathOut}"step1AllPhenoLD_pred.list \
+  --bsize 200 \
+  --out "${pathOut}"burden.res.common.0.1.perc
+
