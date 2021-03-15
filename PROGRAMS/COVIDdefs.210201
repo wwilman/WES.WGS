@@ -1,0 +1,75 @@
+#! /bin/bash
+
+umask 006
+
+if [ $# -ne 2 ] 
+ then
+   echo " "
+   echo "COVID-19 ANALYSIS "
+   echo "____________________________________"
+   echo " " 
+   exit -1
+fi
+
+export JOB=$1
+export YYMMDD=$2
+
+#############################
+#---  define directories ---#
+#############################
+export INPUT=/input_data
+export PROGRAMS=/output_data/PROGRAMS
+export JOBS=$PROGRAMS/JOBS
+export SOURCE=$PROGRAMS/SOURCE
+export LOG=/output_data/LOG/$YYMMDD
+export OUTPUT=/output_data/OUTPUT/$YYMMDD
+export VARIANTS=$OUTPUT/VARIANTS
+export COHORT=$OUTPUT/cohortSample
+export HAIL=$OUTPUT/hail.normID.noChrM.mt
+export PRUNED=$OUTPUT/Pruned
+export PCA=$OUTPUT/PCA
+export ANNOTATION=$OUTPUT/annotation
+export REGENIEIN=$OUTPUT/regenieInputs
+export REGENIEOUT=$OUTPUT/regenieRes
+export DOWNLOADS=/output_data/DOWNLOADS
+export TMP=/output_data/TMP
+
+##############################
+########   Main files  #######
+##############################
+
+export prefix="multisample_20210126"
+export VCF=$INPUT/"$prefix".dv.vcf.gz
+export OUTVCFnormIDnoChrM=$OUTPUT/"$prefix".normID.noChrM.vqsr.flt.vcf.gz 
+export FASTAname=GCA_000001405.15_GRCh38_no_alt_analysis_set.fna
+export HAILoutput=$OUTPUT/"$prefix".normID.GTflt.AB.noChrM.vqsr.flt.vcf.bgz
+export suffix1000G=".shapeit2_integrated_v1a.GRCh38.20181129.phased"
+export suffixEUR=".EUR.normID.GTflt.AB.noChrM.vqsr.flt.vcf.gz"
+export VCFEUR=$OUTPUT/"$prefix""$suffixEUR"
+export REGENIEINPUT=$REGENIEIN/"$prefix".EUR.normID.GTflt.AB.noChrM
+export REGENIEQC=$REGENIEIN/"$prefix".Eur.normID.GTflt.AB.noChrM.vqsr.flt
+export REGENIELD=$REGENIEIN/"$prefix".regenie.LD.prune.maf0.01.geno0.1.Eur.normID.GTflt.AB.noChrM.vqsr.flt
+
+###############################
+#---  run individual jobs  ---#
+###############################
+
+if 
+  test -r $JOBS/$JOB
+then
+  echo Executing program $JOB for analysis YYMMDD=$YYMMDD 
+else
+  echo "Error... Script for job $JOB not found."
+  exit 99
+fi
+
+$JOBS/$JOB >$LOG/$JOB.log1  2>>$LOG/$JOB.log2
+if [ $? -ne 0 ]; then
+  echo !!! errors occured when running job $JOB
+  exit 99
+fi
+cat  $LOG/$JOB.log2 $LOG/$JOB.log1 >$LOG/$JOB.$YYMMDD.log
+rm -f $LOG/$JOB.log2 $LOG/$JOB.log1
+
+
+

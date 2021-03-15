@@ -1,0 +1,33 @@
+##****************************************************************
+##*
+##*
+##*                      ....  COVID01 ....
+##*
+##*
+##* This function normalizes variants and left-aligns them. 
+##* Will be useful for further downstream analysis, including 
+##* ancestry ascertainment and variant annotation 
+##****************************************************************
+
+umask 006
+
+date
+
+#***  Input files ***
+export INVCF=$VCF
+export INFASTA=$DOWNLOADS/$FASTAname
+
+#*** Output files ***
+export OUTVCF=$OUTVCFnormIDnoChrM
+export LOG1=$LOG/01.norm.ID.log
+
+#*** run program ***
+
+bash $SOURCE/01.norm.ID.sh    
+rcode=$?
+if [ $rcode -ne 0 ] ; then
+   echo "error in BASH job $SOURCE/01.norm.ID.sh ";
+   exit -1;
+fi
+
+date

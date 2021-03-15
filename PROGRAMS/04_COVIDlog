@@ -1,0 +1,28 @@
+##****************************************************************
+##*
+##*
+##*                      ....  COVID04 ....
+##*
+##*
+##* Select ancestry. 
+##****************************************************************
+
+umask 006
+
+date
+
+#*** Input files ***
+export OUT4=$VCFEUR
+
+#*** Output files ***
+export LOG4=$LOG/04_COVID.eurVCF.log
+
+#*** run program ***
+bash $SOURCE/04.selectAncestry.log.sh    
+rcode=$?
+if [ $rcode -ne 0 ] ; then
+   echo "error in BASH job $SOURCE/04.selectAncestry.log.sh ";
+   exit -1;
+fi
+
+date

@@ -1,0 +1,31 @@
+##****************************************************************
+##*
+##*
+##*                   ....  COVID01log ....
+##*
+##*
+##* This function makes logs for function COVID01
+##****************************************************************
+
+umask 006
+
+date
+
+#***  Input files ***
+export ORGVCF=$VCF
+export OUTVCF=$OUTVCFnormIDnoChrM
+
+
+#*** Output files ***
+export LOG1=$LOG/01_COVID.inputVCF.log
+export LOG2=$LOG/01_COVID.outputVCF.log
+
+#*** run program ***
+bash $SOURCE/01.norm.ID.log.sh    
+rcode=$?
+if [ $rcode -ne 0 ] ; then
+   echo "error in BASH job $SOURCE/01.norm.ID.log.sh ";
+   exit -1;
+fi
+
+date

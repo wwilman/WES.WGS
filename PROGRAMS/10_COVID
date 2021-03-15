@@ -1,0 +1,33 @@
+##****************************************************************
+##*
+##*
+##*                      ....  COVID10 ....
+##*
+##*
+##* this is the idea behind the code:
+##* 1) only keep variants that are either high or moderate VEP impacts, as these will not be used for the analysis anyway. This shrinks the list down.
+##* 2) find all remaining variants with a gnomAD/ESP MAF more than 1%, or a local MAF more than 1%, and give them an allele frequency of 10% for our purposes
+##* 3) of the remaining variants (i.e. singleton or MAF<1% without gnomAD/ESP annotation), check if they have a MAF<0.1%. If they do, assign them a MAF of 0.1%, otherwise a MAF of 0.5% for our purposes.
+##* 4) of the remaining variants, find the ones with a gnomAD/ESP MAF more than 0.1% (and hence less than 1%). Give them an allele frequency of 0.5% for our purposes.
+##****************************************************************
+umask 006
+
+date
+
+#***  Input files ***
+export PREFIX=$prefix
+export SUFFIX=$suffixEUR
+export DIRTMP=$TMP
+export DIROUT=$OUTPUT
+export DIRREGENIE=$REGENIEIN
+export DIRANNOTATION=$ANNOTATION
+
+#*** run program ***
+bash $SOURCE/10.make.aaf.file.sh    
+rcode=$?
+if [ $rcode -ne 0 ] ; then
+   echo "error in BASH job $SOURCE/10.make.aaf.file.sh ";
+   exit -1;
+fi
+
+date

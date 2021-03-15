@@ -1,0 +1,27 @@
+##****************************************************************
+##*
+##*
+##*                      ....  COVID08_exclude ....
+##*
+##*
+##*Generate list of wrong variants
+##****************************************************************
+
+umask 006
+
+date
+
+#***  Input files ***
+export DIROUT=$OUTPUT
+export SUFFIX=$suffixEUR
+export PREFIX=$prefix
+
+#*** run program ***
+bash $SOURCE/08.exlusion.sh    
+rcode=$?
+if [ $rcode -ne 0 ] ; then
+   echo "error in BASH job $SOURCE/08.exlusion.sh ";
+   exit -1;
+fi
+
+date

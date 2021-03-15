@@ -1,0 +1,36 @@
+##****************************************************************
+##*
+##*
+##*                      ....  COVID02 ....
+##*
+##*
+##*this is a python script loosely based on Kumar and Konrad's effort here: 
+##*https://github.com/mkveerapen/covid19_sequencing
+##*again, some of the QC at our institution was done by our genome center, 
+##*and therefore you should refer to the above link for more thorough QC
+##*specifically, variant recalibration should still be done, even if not shown here, 
+##*can discuss with me on how to do it using gatk.##* ancestry ascertainment and variant annotation 
+##****************************************************************
+
+umask 006
+
+date
+
+#***  Input files ***
+export INVCF=$OUTVCFnormIDnoChrM
+export TMP=$TMP
+export pathHAIL=$HAIL
+
+#*** Output files ***
+export LOG2=$LOG/02.h_step.log
+export outputHAIL=$HAILoutput
+
+#*** run program ***
+python3 $SOURCE/02.h_step.py    
+rcode=$?
+if [ $rcode -ne 0 ] ; then
+   echo "error in BASH job $SOURCE/02.h_step.py ";
+   exit -1;
+fi
+
+date

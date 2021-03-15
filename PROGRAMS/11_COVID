@@ -1,0 +1,43 @@
+##****************************************************************
+##*
+##*
+##*                      ....  COVID11 ....
+##*
+##*
+##*this performs the actual regenie analyses (steps 1 and 2, with and without the common variant exclusion file)
+##*note that the --htp option in regenie step 2 is important for the meta-analysis, so please make sure to use it
+##****************************************************************
+
+umask 006
+
+date
+
+#***  Input files ***
+export INVCF=$VCFEUR
+export DIRPCA=$PCA
+export DIRTMP=$TMP
+export DIROUT=$OUTPUT
+export DIRREGENIE=$REGENIEIN
+export DIRREGENIEOUT=$REGENIEOUT
+export REGENIELD=$REGENIELD
+export REGENIEQC=$REGENIEQC
+
+
+#*** run program ***
+if [ ! -d $DIRREGENIEOUT ] 
+   then
+   mkdir $DIRREGENIEOUT
+fi
+if [ ! -d $DIRREGENIEOUT/tmp ] 
+   then 
+   mkdir $DIRREGENIEOUT/tmp 
+fi
+
+bash $SOURCE/11.regenieAnalysis.sh
+rcode=$?
+if [ $rcode -ne 0 ] ; then
+   echo "error in BASH job $SOURCE/11.regenieAnalysis.sh ";
+   exit -1;
+fi
+
+date

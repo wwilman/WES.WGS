@@ -1,0 +1,29 @@
+##****************************************************************
+##*
+##*
+##*                      ....  COVID04 exclusion list ....
+##*
+##*
+##* Select ancestry. 
+##****************************************************************
+
+umask 006
+
+date
+
+#***  Input files ***
+export INVCF=$OUTPUT/"$prefix""$suffixEUR"
+export DIROUT=$OUTPUT
+
+#*** Output files ***
+export LOG4=$LOG/04.exclusion.list.log
+
+#*** run program ***
+bash $SOURCE/04.exclusion.list.sh    
+rcode=$?
+if [ $rcode -ne 0 ] ; then
+   echo "error in BASH job $SOURCE/04.exclusion.list.sh ";
+   exit -1;
+fi
+
+date

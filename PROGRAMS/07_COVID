@@ -1,0 +1,39 @@
+##****************************************************************
+##*
+##*
+##*                      ....  COVID07 ....
+##*
+##*
+##*this annotates each chromosome using VEP and dbNSFP
+##*again, this could be sped up using PBS arrays if your cluster permits
+##*it assumes that vep was installed to work offline, and with a cache directory
+##*the --fork 10 makes it faster, but can give trouble sometimes
+##*here I did it on the european population, but it can be done once on the whole sample (then used in each ancestry stratified analysis).
+##****************************************************************
+
+umask 006
+
+date
+
+#***  Input files ***
+export DIROUT=$OUTPUT
+export DIRANNOT=$ANNOTATION
+export DIRDOWNLOADS=$DOWNLOADS
+export SUFFIX=$suffixEUR
+export PREFIX=$prefix
+
+#*** run program ***
+if [ ! -d $DIRANNOT ] 
+   then
+   mkdir $DIRANNOT
+fi
+
+
+bash $SOURCE/07.finalAnnot.sh    
+rcode=$?
+if [ $rcode -ne 0 ] ; then
+   echo "error in BASH job $SOURCE/07.finalAnnot.sh ";
+   exit -1;
+fi
+
+date

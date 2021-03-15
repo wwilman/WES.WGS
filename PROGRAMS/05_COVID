@@ -1,0 +1,35 @@
+##****************************************************************
+##*
+##*
+##*                      ....  COVID03 ....
+##*
+##*
+##*this function outputs PCA results from common and rare variants from the selected ancestry obtained in the previous step.
+##*again I assume european ancestry here, as per previous step.
+##****************************************************************
+
+umask 006
+
+date
+
+#***  Input files ***
+export INVCF=$VCFEUR
+export DIRPCA=$PCA
+
+#*** Output files ***
+export LOG5=$LOG/05.PCA.log
+
+#*** run program ***
+if [ ! -d $DIRPCA ] 
+   then
+   mkdir $DIRPCA
+fi
+
+bash $SOURCE/05.PCA.sh    
+rcode=$?
+if [ $rcode -ne 0 ] ; then
+   echo "error in BASH job $SOURCE/05.PCA.sh ";
+   exit -1;
+fi
+
+date

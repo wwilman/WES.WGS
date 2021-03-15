@@ -1,0 +1,29 @@
+##****************************************************************
+##*
+##*
+##*                      ....  COVID06 ....
+##*
+##*
+##*some of the next few steps were too slow to do on the whole genome, and so I split my file in chromosomes.
+##*this is one of the steps that should 100% be performed using PBS arrays, if available, to speed up computing time
+##****************************************************************
+
+umask 006
+
+date
+
+#***  Input files ***
+export INVCF=$VCFEUR
+export DIROUT=$OUTPUT
+export SUFFIX=$suffixEUR
+export PREFIX=$prefix
+
+#*** run program ***
+bash $SOURCE/06.splitChrom.sh    
+rcode=$?
+if [ $rcode -ne 0 ] ; then
+   echo "error in BASH job $SOURCE/06.splitChrom.sh ";
+   exit -1;
+fi
+
+date

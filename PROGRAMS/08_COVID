@@ -1,0 +1,37 @@
+##****************************************************************
+##*
+##*
+##*                      ....  COVID08 ....
+##*
+##*
+##*this takes the filtered vcf file from the WGS sequencing, removes variants with MAF < 1%, MAC < 5, and for whom HWE is not reached, and outputs the plink binary file.
+##*genotype call rate and MAF threshold is set high to avoid quasi-separation, since step 1 does not use Firth
+##*this file is to be used in step 1 of regenie. regenie does not accept vcf as inputs.
+##*warning: may take a bit of time.
+##****************************************************************
+
+umask 006
+
+date
+
+#***  Input files ***
+export INVCF=$VCFEUR
+export REGENIEQC=$REGENIEQC
+export REGENIELD=$REGENIELD
+export DIRREGENIE=$REGENIEIN
+export DIROUT=$OUTPUT
+
+#*** run program ***
+if [ ! -d $REGENIEIN ] 
+   then
+   mkdir $REGENIEIN
+fi
+
+bash $SOURCE/08.WGS.vcf.to.plink.sh    
+rcode=$?
+if [ $rcode -ne 0 ] ; then
+   echo "error in BASH job $SOURCE/08.WGS.vcf.to.plink.sh ";
+   exit -1;
+fi
+
+date
